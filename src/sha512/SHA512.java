@@ -65,7 +65,8 @@ public class SHA512 {
                    };
     public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
         // TODO code application logic here
-       String msg = "abc";
+       String msg = "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstuabcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu";
+        System.out.println(msg.length() * 4);
 //       File msg = new File("C:\\Users\\moh.afifun\\ownCloud\\ownCloudUserManual.pdf");
 //       Path pathFileD = Paths.get(msg.getAbsolutePath());
 //       byte[] bytesFileD = Files.readAllBytes(pathFileD);
@@ -75,6 +76,7 @@ public class SHA512 {
        int[][] d = digest(bits);
 //       System.out.println(Arrays.toString(bits));
        int[][] temp4  = generateW(d[0]);
+        convertBitsToHex(temp4);
 //        String output = "";
       
         System.out.println("_____________________________________");
@@ -86,47 +88,65 @@ public class SHA512 {
             iv[i] = generateK(H[i]);
        }
        
+        System.out.println(d.length);
         for (int i = 0; i < d.length; i++) {
             int[][] temp2  = generateW(d[i]);
             int[][] hasil = proses(temp2, iv);
+//            System.out.println("_______ hasil _______");
+//            convertBitsToHex(hasil);
+//            System.out.println("_______ iv _______");
+//            convertBitsToHex(iv);
             for (int j = 0; j < hasil.length; j++) {
 //                System.out.println(Arrays.deepToString(iv));
 //                System.out.println(Arrays.deepToString(hasil));
 //                System.out.println(hasil == iv);
-                iv[i] = sum(hasil[i], iv[i]);  
+//                System.out.print("H[" + j +"]");
+//                convertBitsToHex2(hasil[j]);
+//                System.out.print("iv[" + j +"]");
+//                convertBitsToHex2(iv[j]);
+                iv[j] = sum(hasil[j], iv[j]);  
+                
+                System.out.print("iv + hasil[" + j +"]");
+                convertBitsToHex2(iv[j]);
 //                System.out.println(Arrays.deepToString(iv));
             }
         }
-        
-        String output = "";
-        for (int i = 0; i < iv.length; i++) {
-            output = output + Arrays.toString(iv[i]).replaceAll("[\\[\\] ,]", "");
-        }
-        System.out.println(output);
-        convertBitsToHex(iv);
-        String hex = "";
-        for (int i = 0; i < output.length(); i+=4) {
-            String bin = output.substring(i, i + 4);
-//            System.out.println(bin);
-            int decimal = Integer.parseInt(bin, 2);
-//            System.out.println(decimal);
-            hex += Integer.toHexString(decimal);
-        }
-        System.out.println(hex);
-        System.out.println(hex.length());
-//        byte[] eb = hexStringToByteArray(hex);
-//        FileOutputStream fileOuputStream = new FileOutputStream("E:\\testing2.txt"); 
-//	fileOuputStream.write(eb);
-//	fileOuputStream.close();
-// 
-	System.out.println("Done");
-        
-        int[] e = new int[]{1,0,1,1};
-        int[] f = new int[]{0,1,0,1};
-        int[] g = new int[]{1,0,1,0};
-        int[] result = sum(sum(e,f),g);
-        System.out.println(Arrays.toString(result) + "");
-        System.out.println(0 | 7);
+//        
+//        String output = "";
+//        for (int i = 0; i < iv.length; i++) {
+//            output = output + Arrays.toString(iv[i]).replaceAll("[\\[\\] ,]", "");
+//        }
+//        System.out.println(output);
+//        convertBitsToHex(iv);
+//        String hex = "";
+//        for (int i = 0; i < output.length(); i+=4) {
+//            String bin = output.substring(i, i + 4);
+////            System.out.println(bin);
+//            int decimal = Integer.parseInt(bin, 2);
+////            System.out.println(decimal);
+//            hex += Integer.toHexString(decimal);
+//        }
+//        System.out.println(hex);
+//        System.out.println(hex.length());
+////        byte[] eb = hexStringToByteArray(hex);
+////        FileOutputStream fileOuputStream = new FileOutputStream("E:\\testing2.txt"); 
+////    fileOuputStream.write(eb);
+////    fileOuputStream.close();
+//// 
+//  System.out.println("Done");
+//        
+//        int[] e = new int[]{1,0,1,1};
+//        int[] f = new int[]{0,1,0,1};
+//        int[] g = new int[]{1,0,1,0};
+//        String hex1 ="73a54f399fa4b1b2";
+//        String hex2 = "6a09e667f3bcc908";
+//        
+//        int[] bits1 = generateK(hex1);
+//        int[] bits2 = generateK(hex2);
+//        
+//        int[] result = sum(bits1, bits2);
+//        convertBitsToHex2(result);
+//        System.out.println(0 | 7);
      
     }
     
@@ -165,6 +185,20 @@ public class SHA512 {
             convertBitsToHex(temp);
         }
         return temp;
+    }
+    
+    public static void convertBitsToHex2(int[] input) {
+        
+            String output = Arrays.toString(input).replaceAll("[\\[\\] ,]", "");
+             String hex = "";
+            for (int j = 0; j < output.length(); j += 4) {
+                String bin = output.substring(j, j + 4);
+                //            System.out.println(bin);
+                int decimal = Integer.parseInt(bin, 2);
+                //            System.out.println(decimal);
+                hex += Integer.toHexString(decimal);
+            }
+            System.out.println(hex);
     }
     
     public static void convertBitsToHex(int[][] input) {
@@ -408,7 +442,14 @@ public class SHA512 {
     public static int[] generateBits(String hexKey){
         //method ini mengambil 16 Hexa pertama dari key
         int msglength = hexKey.length() * 4;
-        int padding = 1024 - (msglength % 1024);
+        System.out.println("msglength : " + msglength);
+        System.out.println(((896 - (msglength + 1))%1024));
+        int kZeros = (896 - (msglength + 1))%1024;
+        if(kZeros < 0){
+            kZeros += 1024;
+        }
+        int padding = (kZeros) + 128 + 1;
+        System.out.println(padding);
         StringBuilder str = new StringBuilder(msglength);
         int keyBits[] = new int[msglength + padding];
             for (int i = 0; i <hexKey.length() ; i++) {
