@@ -82,7 +82,7 @@ public class SHA512GUI extends javax.swing.JFrame {
         KeyEncryptLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         KeyEncryptButton.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        KeyEncryptButton.setText("Input Hex");
+        KeyEncryptButton.setText("Input Hash");
         KeyEncryptButton.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         KeyEncryptButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,7 +123,7 @@ public class SHA512GUI extends javax.swing.JFrame {
                 .addComponent(copyrightLabelEnkripsi)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EncryptionPanelLayout.createSequentialGroup()
-                .addContainerGap(76, Short.MAX_VALUE)
+                .addContainerGap(72, Short.MAX_VALUE)
                 .addGroup(EncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addGroup(EncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
